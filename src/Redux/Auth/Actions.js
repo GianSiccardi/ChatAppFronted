@@ -8,7 +8,7 @@ import {
     REQ_USER_REQUEST, 
     REQ_USER_SUCCESS, 
     REQ_USER_FAILURE, 
-    SEARCH_USER_REQUEST, 
+    SEARCH_USER_REQUEST,LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, 
     SEARCH_USER_SUCCESS, 
     SEARCH_USER_FAILURE, 
     UPDATE_USER_REQUEST, 
@@ -46,6 +46,7 @@ export const login=(data)=>async(dispatch)=>{
 
         dispatch({type:LOGIN_REQUEST})
         const res=await axios.post(`${BASE_API_URL}/auth/login`,data);
+
         const user=res.data;
       
         dispatch({ type: LOGIN_SUCCESS, payload: user.jwt });
@@ -53,19 +54,22 @@ export const login=(data)=>async(dispatch)=>{
         localStorage.setItem("jwt", user.jwt);
     
     }catch(error){
-        dispatch({type:LOGIN_FAILURE,payload:error.message})
-        console.log(error)
+         console.error("Login error:", error.response ? error.response.data : error.message);
+    dispatch({ type: LOGIN_FAILURE, payload: error.message });
 
     }
 }
 
+
+
+//funcion que uso en el App.jsx
 export const currentUser=(jwt)=>async(dispatch)=>{
    
     dispatch({type:REQ_USER_REQUEST})
     try{
 
         
-        const res=await axios.get(`${BASE_API_URL}/customers/`,  {
+        const res=await axios.get(`${BASE_API_URL}/customers`,  {
              headers:{
             Authorization:`Bearer ${jwt}`
     }})
@@ -97,20 +101,22 @@ export const searchUser=(data)=>async(dispatch)=>{
     }
 }
 
-export const updateUser=(data)=>async(dispatch)=>{
-    dispatch({type: UPDATE_USER_REQUEST})
-    try{
+export const updateUser = (data) => async (dispatch) => {
+    dispatch({ type: UPDATE_USER_REQUEST });
+    try {
+      const jwt = localStorage.getItem("jwt");
+      const res = await axios.put(`${BASE_API_URL}/customers`, data, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
   
-    const jwt=localStorage.getItem("jwt")
-        const res=await axios.get(`${BASE_API_URL}/customers/update/${data.id}`,{
-             headers:{
-            Authorization:`Bearer ${jwt}`
-    }})
-    dispatch({type:UPDATE_USER_SUCCESS })
-        console.log("update user",data )
-
-    }catch(error){
-        dispatch({type:UPDATE_USER_FAILURE})
-        console.log(error)
+      dispatch({ type: UPDATE_USER_SUCCESS });
+      console.log("update user", res.data);
+  
+    } catch (error) {
+      dispatch({ type: UPDATE_USER_FAILURE });
+      console.log(error);
     }
-}
+  };
+  

@@ -45,10 +45,10 @@ const Auth = () => {
         navigate("/Home")
     }
 
-    const onSubmitLogin=(data)=>{
-        dispatch(login(data));
-        navigate("/Home")
-    }
+    const onSubmitLogin = async (data) => {
+        dispatch(login(data)); 
+        navigate("/Home");
+    };
 
 
     return (
@@ -98,10 +98,10 @@ const Auth = () => {
                                     placeholder="Password"
                                     type="password"
                                     className="rounded-full p-6 border-purple-500 focus:border-black"
-                                    onChange={(e) => setEmail(e.target.value)}
+                                   
                                     {...formLogin.register("password")}
                                 />
-                               <Button type="submit">Login</Button>
+                               <Button className="rounded-full p-6 bg-purple-700"  type="submit">Login</Button>
                              </form>
                             </TabsContent>
 
@@ -145,7 +145,7 @@ const Auth = () => {
                                         {form.formState.errors.password && (
                                           <p className="text-red-500">{form.formState.errors.password.message}</p>
                                         )}
-                                    <Button className="rounded-full p-6" type="submit" >SignUp</Button>
+                                    <Button className="rounded-full p-6 bg-purple-700" type="submit" >SignUp</Button>
                                 </form>
                             </TabsContent>
                         </Tabs>
