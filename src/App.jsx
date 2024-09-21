@@ -13,7 +13,7 @@ function App() {
     <>
      <Routes>
       <Route path='/Home' element={<HomaPage/>}></Route>
-      <Route path='/' element={<Auth/>}></Route>
+      <Route path='/ChatApp' element={<Auth/>}></Route>
 
      </Routes>
     </>

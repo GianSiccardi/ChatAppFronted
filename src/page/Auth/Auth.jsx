@@ -3,22 +3,52 @@ import React, { useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useForm} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { login, register } from '@/Redux/Auth/Actions';
+import { useNavigate } from 'react-router-dom';
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup"
 
 const Auth = () => {
 
     const [email, setEmail] = useState("");
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-   const form=useForm({
-    resolver:"",
-    defaultValues:{
-        fullName:"",
-        email:"",
-        phoneNumber:"",
-        password:""
 
+    const schema = yup.object().shape({
+        fullName: yup.string().required("El nombre completo es obligatorio"),
+        email: yup.string().email("El email no es válido").required("El email es obligatorio"),
+        phoneNumber: yup.string().required("El número de teléfono es obligatorio"),
+        password: yup.string().required("La contraseña es obligatoria"),
+    });
+    const form = useForm({
+        resolver: yupResolver(schema),
+        defaultValues: {
+            fullName: "",
+            email: "",
+            phoneNumber: "",
+            password: ""
+        }
+    });
+
+    const formLogin=useForm({
+        defaultValues:{
+            email:"",
+            password:""
+        }
+    }) 
+
+    const onSubmit = (data) => {
+        dispatch(register(data));
+        navigate("/Home")
     }
-   })
+
+    const onSubmitLogin=(data)=>{
+        dispatch(login(data));
+        navigate("/Home")
+    }
 
 
     return (
@@ -57,50 +87,66 @@ const Auth = () => {
                                 </TabsTrigger>
                             </TabsList>
                             <TabsContent className="flex flex-col gap-5 mt-10" value="login">
+                            <form  className="flex flex-col gap-5" onSubmit={formLogin.handleSubmit(onSubmitLogin)}>
+
                                 <Input
                                     placeholder="Email"
                                     type="email"
                                     className="rounded-full p-6 border-purple-500 focus:border-black"
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-
+                                    {...formLogin.register("email")} />
                                 <Input
                                     placeholder="Password"
                                     type="password"
                                     className="rounded-full p-6 border-purple-500 focus:border-black"
                                     onChange={(e) => setEmail(e.target.value)}
+                                    {...formLogin.register("password")}
                                 />
+                               <Button type="submit">Login</Button>
+                             </form>
                             </TabsContent>
-                          
+
                             <TabsContent className="flex flex-col gap-5 " value="signup">
-                                <Input
-                                    placeholder="FullName"
-                                    type="text"
-                                    className="rounded-full p-6 border-purple-500 focus:border-black"
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                                <Input
-                                    placeholder="Email"
-                                    type="email"
-                                    className="rounded-full p-6 border-purple-500 focus:border-black" 
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                                <Input
-                                    placeholder="Phone"
-                                    type="text"
-                                    className="rounded-full p-6 border-purple-500 focus:border-black"
-                                     onChange={(e) => setEmail(e.target.value)}
-                                />
+                                <form  className="flex flex-col gap-5" onSubmit={form.handleSubmit(onSubmit)}>
+                                    <Input
+                                        placeholder="FullName"
+                                        type="text"
+                                        className="rounded-full p-6 border-purple-500 focus:border-black"
+                                        {...form.register("fullName")}
+                                    />
+                                    {form.formState.errors.fullName && (
+                                        <p className="text-red-500">{form.formState.errors.fullName.message}</p>
+                                    )}
+                                    <Input
+                                        placeholder="Email"
+                                        type="email"
+                                        className="rounded-full p-6 border-purple-500 focus:border-black"
+                                        {...form.register("email")}
+                                    />
+                                    {form.formState.errors.email && (
+                                        <p className="text-red-500">{form.formState.errors.email.message}</p>
+                                    )}
+                                    <Input
+                                        placeholder="Phone"
+                                        type="text"
+                                        className="rounded-full p-6 border-purple-500 focus:border-black"
+                                        {...form.register("phoneNumber")}
+                                    />
+                                    {form.formState.errors.phoneNumber && (
+                                        <p className="text-red-500">{form.formState.errors.phoneNumber.message}</p>
+                                    )}
 
 
-                                <Input
-                                    placeholder="Password"
-                                    type="password"
-                                    className="rounded-full p-6 border-purple-500 focus:border-black" 
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                                   <Button className="rounded-full p-6" >SignUp</Button>
-
+                                    <Input
+                                        placeholder="Password"
+                                        type="password"
+                                        className="rounded-full p-6 border-purple-500 focus:border-black"
+                                        {...form.register("password")}
+                                        />
+                                        {form.formState.errors.password && (
+                                          <p className="text-red-500">{form.formState.errors.password.message}</p>
+                                        )}
+                                    <Button className="rounded-full p-6" type="submit" >SignUp</Button>
+                                </form>
                             </TabsContent>
                         </Tabs>
                     </div>
