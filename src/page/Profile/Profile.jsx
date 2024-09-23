@@ -6,14 +6,14 @@ import { FaPlus, FaTrash } from 'react-icons/fa';
 import { Input } from '@/components/ui/input';
 import { colors, getColor } from '@/utils/utils';
 import { Button } from '@/components/ui/button';
-import { useDispatch ,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
 
 
 const Profile = () => {
 
-  const {auth}=useSelector(store=>store);
+  const { auth } = useSelector(store => store);
   const [fullName, setFullName] = useState("");
   const [hovered, setHovered] = useState(false);
   const [image, setImage] = useState(null)
@@ -23,13 +23,13 @@ const Profile = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const dispatch = useDispatch();
 
-useEffect(()=>{
-  if(auth){
-    setEmail(auth.email);
-    setPhoneNumber(auth.phoneNumber);
-    setFullName(auth.fullName)
-  }
-},[auth])
+  useEffect(() => {
+    if (auth.user) { 
+      setFullName(auth.user.fullName); 
+      setEmail(auth.user.email);
+      setPhoneNumber(auth.user.phoneNumber);
+    }
+  }, [auth.user]);
 
 
   const handleUpdateUser = () => {
@@ -39,9 +39,9 @@ useEffect(()=>{
       phoneNumber: phoneNumber,
       favoriteColor: selectdColor
     };
-  
-   
-    dispatch(updateUser(data)); 
+
+
+    dispatch(updateUser(data));
   };
   return (
     <div className='bg-[#1b1c24] h-screen flex items-center justify-center flex-col gap-10'>
@@ -62,9 +62,11 @@ useEffect(()=>{
                 />
               ) : (
                 <div className={`uppercase h-32 w-32 md:w-48 md:h-48 text-5xl border border-gray-300 flex items-center justify-center rounded-full ${getColor(selectdColor)}`}>
-                  {/* Puedes poner un texto o un ícono aquí */}
-                  👤
-                </div>
+                {fullName 
+                  ? fullName.charAt(0) 
+                  : "" 
+                }
+              </div>
               )}
             </Avatar>
             {hovered && (
@@ -74,7 +76,9 @@ useEffect(()=>{
                 }
               </div>
             )}
-            { }
+            {
+
+            }
 
           </div>
           <div className="flex min-w-32 md:min-w-64 flex-col gap-5 text-white items-center justify-center">
@@ -104,7 +108,7 @@ useEffect(()=>{
                   key={index}
                   className={`${color} h-8 w-8 rounded-full cursor-pointer transition-all duration-300 ${selectdColor === index ? "outline outline-white/50 outline-1" : ""
                     }`}
-                  onClick={() => setSelectedColor(color)} 
+                  onClick={() => setSelectedColor(color)}
                 />
               ))}
             </div>

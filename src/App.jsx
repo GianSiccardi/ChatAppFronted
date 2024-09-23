@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { currentUser } from './Redux/Auth/Actions'
 import { store } from './Redux/store'
+import Chat from './page/Chat/Chat'
+import ChatIndex from './page/Chat/Chat'
+
 
 
 function App() {
@@ -28,6 +31,7 @@ function App() {
       <Route path='/Home' element={<HomaPage/>}></Route>
       <Route path='/ChatApp' element={<Auth/>}></Route>
       <Route path='/Profile' element={<Profile/>}></Route>
+      <Route path='/Chat' element={<ChatIndex/>}></Route>
 
      </Routes>
 </div>:<Auth/>}
