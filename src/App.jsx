@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
-import './App.css'
+import './index.css'
 import { Route, Routes } from 'react-router-dom'
 import HomaPage from './page/Home/HomaPage'
 import Auth from './page/Auth/Auth'
@@ -28,8 +28,8 @@ function App() {
     <>
     {auth.user ? <div>
      <Routes>
-      <Route path='/Home' element={<HomaPage/>}></Route>
-      <Route path='/ChatApp' element={<Auth/>}></Route>
+ 
+      <Route path='/' element={<Auth/>}></Route>
       <Route path='/Profile' element={<Profile/>}></Route>
       <Route path='/Chat' element={<ChatIndex/>}></Route>
 

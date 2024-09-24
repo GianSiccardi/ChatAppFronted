@@ -13,7 +13,8 @@ import {
     SEARCH_USER_FAILURE, 
     UPDATE_USER_REQUEST, 
     UPDATE_USER_SUCCESS, 
-    UPDATE_USER_FAILURE 
+    UPDATE_USER_FAILURE,
+    LOGOUT 
   } from "./ActionsTypes"; 
 import axios from "axios";
 
@@ -120,3 +121,9 @@ export const updateUser = (data) => async (dispatch) => {
     }
   };
   
+
+
+export const logOutAction=()=>(dispatch)=>{
+  localStorage.clear();
+  dispatch({type:LOGOUT})
+}

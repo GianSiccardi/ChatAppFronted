@@ -8,6 +8,8 @@ export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "LOGIN_FAILURE";
 
+export const LOGOUT="LOGOUT"
+
 // REQ_USER action types
 export const REQ_USER_REQUEST = "REQ_USER_REQUEST";
 export const REQ_USER_SUCCESS = "REQ_USER_SUCCESS";

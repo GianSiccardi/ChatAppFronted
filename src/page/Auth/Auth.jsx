@@ -42,12 +42,12 @@ const Auth = () => {
 
     const onSubmit = (data) => {
         dispatch(register(data));
-        navigate("/Home")
+        navigate("/Chat")
     }
 
     const onSubmitLogin = async (data) => {
         dispatch(login(data)); 
-        navigate("/Home");
+        navigate("/Chat");
     };
 
 
