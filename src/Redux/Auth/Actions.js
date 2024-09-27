@@ -14,7 +14,7 @@ import {
     UPDATE_USER_REQUEST, 
     UPDATE_USER_SUCCESS, 
     UPDATE_USER_FAILURE,
-    LOGOUT 
+    LOGOUT ,SELECT_CHAT
   } from "./ActionsTypes"; 
 import axios from "axios";
 
@@ -89,11 +89,11 @@ export const searchUser=(data)=>async(dispatch)=>{
     dispatch({type:SEARCH_USER_REQUEST})
     try{
         const jwt=localStorage.getItem("jwt")
-        const res=await axios.get(`${BASE_API_URL}/customers/search?name${data.keyword}`,{
+        const res=await axios.get(`${BASE_API_URL}/customers/search?q=${data.keyword}`,{
              headers:{
             Authorization:`Bearer ${jwt}`
     }})
-    dispatch({type:SEARCH_USER_SUCCESS })
+    dispatch({type:SEARCH_USER_SUCCESS ,payload:res.data })
         
 
     }catch(error){
@@ -127,3 +127,8 @@ export const logOutAction=()=>(dispatch)=>{
   localStorage.clear();
   dispatch({type:LOGOUT})
 }
+
+export const selectChat = (chat) => ({
+  type: SELECT_CHAT,
+  payload: chat,
+});

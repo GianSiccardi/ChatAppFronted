@@ -23,21 +23,34 @@ import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
 import { useDispatch, useSelector } from 'react-redux';
 import { store } from '@/Redux/store';
 import { colors, getColor } from '@/utils/utils';
+import { searchUser, selectChat } from '@/Redux/Auth/Actions'
 
 const NewDm = () => {
 
-    const { auth } = useSelector(store => store);
+
+    const { auth, chatState } = useSelector(store => store);
 
     const [openNewContactModel, setOpenNewContactModel] = useState(false);
-    const [searchConctacted, setSearchContacted] = useState([])
+    const searchConctacted = useSelector(state => state.auth.searchContacted);
     const [image, setImage] = useState(null);
+    const [keyword, setKeyword] = useState('')
 
-    const searchConctact = () => {
 
-    }
 
-    const selecteNewConctat =()=>{
+    const dispatch = useDispatch()
 
+    const handleSearchUser = (keyword) => {
+        setKeyword(keyword);
+        if (keyword) {
+            dispatch(searchUser({ keyword }));
+        }
+    };
+
+
+    const selecteNewConctat = (contact) => {
+        dispatch(selectChat(contact)); 
+    
+        setOpenNewContactModel(false);
     }
 
     return (
@@ -62,54 +75,50 @@ const NewDm = () => {
                 <DialogContent className="bg-[#181920] border-none text-white w-[400px] h-[400px] flex flex-col">
                     <DialogHeader>
                         <DialogTitle>Selecciona el contacto</DialogTitle>
-                        <DialogDescription>
-
-                        </DialogDescription>
+                        <DialogDescription></DialogDescription>
                     </DialogHeader>
                     <div className="">
-                        <Input placeholder="Busca el contacto"
+                        <Input
+                            placeholder="Busca el contacto"
                             className="rounded-lg p-6 bg-[#2c2e3b] border-none"
-                            onChange={(e) => searchConctact(e.target.value)} />
+                            onChange={(e) => handleSearchUser(e.target.value)}
+                        />
                     </div>
-                    <ScrollArea className="h-[25px]">
+                    <ScrollArea className="h-[55vh] overflow-y-auto">
                         <div className="flex flex-col gap-5">
-                            {searchConctacted.map((contact) => (
-                                <div key={contact.id} 
-                                onClick={selecteNewConctat}
-                                className='flex gap-3 items-center cursor-pointer'>
+                            {Array.isArray(searchConctacted) && searchConctacted.map((contact) => (
+                                <div key={contact.id}
+                                    onClick={() => selecteNewConctat(contact)}
+                                    className='flex gap-3 items-center cursor-pointer'>
                                     <div className='w-18 h-18 relative'>
                                         <Avatar className='h-12 w-12 rounded-full overflow-hidden'>
-                                            {image ? (
+                                            {contact.image ? (
                                                 <AvatarImage
-                                                    src={image}
+                                                    src={contact.image}
                                                     className='object-cover w-full h-full bg-black'
                                                     alt="Avatar"
                                                 />
                                             ) : (
-                                                <div className={`uppercase h-16 w-16 text-5xl border border-gray-300 flex items-center justify-center rounded-full ${getColor(selectedColor)}`}>
-                                                    {contact.user.fullName ? auth.user.fullName.charAt(0) : 
-                                                     contact.email.split("").shift("") }
+                                                <div className={`uppercase h-16 w-16 text-5xl border border-gray-300 flex items-center justify-center rounded-full ${getColor(contact.selectedColor)}`}>
+                                                    {contact.fullName ? contact.fullName.charAt(0) : contact.email.charAt(0)}
                                                 </div>
                                             )}
                                         </Avatar>
                                     </div>
+                                    <div className="flex flex-col">
+                                        <div className="flex flex-col">
+                                            <span>{contact.fullName}</span>
+                                            <span className='text-xs'>{contact.email}</span> 
+                                        </div>
+
+
+                                    </div>
                                 </div>
-                            ))
-
-                            }
+                            ))}
 
                         </div>
-                        <div className="flex flex-col">
-                         <span>
-                            {auth.user.fullName ? `
-                            ${auth.user.fullName }` : ""}
-                            </span>
-                            <span className='text-xs'>
-                             {auth.email}
-                            </span>
+                        { }
 
-
-                        </div>
                     </ScrollArea>
 
                     {

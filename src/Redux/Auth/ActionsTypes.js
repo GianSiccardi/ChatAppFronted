@@ -10,6 +10,8 @@ export const LOGIN_FAILURE = "LOGIN_FAILURE";
 
 export const LOGOUT="LOGOUT"
 
+export const SELECT_CHAT="SELECT_CHAT"
+
 // REQ_USER action types
 export const REQ_USER_REQUEST = "REQ_USER_REQUEST";
 export const REQ_USER_SUCCESS = "REQ_USER_SUCCESS";

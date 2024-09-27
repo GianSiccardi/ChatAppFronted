@@ -13,7 +13,8 @@ import {
     SEARCH_USER_FAILURE,
     UPDATE_USER_REQUEST,
     UPDATE_USER_SUCCESS,
-    UPDATE_USER_FAILURE
+    UPDATE_USER_FAILURE,
+    SELECT_CHAT
 } from './ActionsTypes';
 
 
@@ -21,7 +22,9 @@ const initialState = {
     user: null,
     loading: false,
     error: null,
-    jwt: null
+    jwt: null,
+    searchContacted: [],
+    selectedChat: null, 
 }
 export const authReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -37,9 +40,11 @@ export const authReducer = (state = initialState, action) => {
             return { ...state, loading: false, error: null, jwt: action.payload };
 
         case REQ_USER_SUCCESS:
-        case SEARCH_USER_SUCCESS:
         case UPDATE_USER_SUCCESS:
             return { ...state, user: action.payload, loading: false, error: null };
+
+        case SEARCH_USER_SUCCESS:
+            return { ...state, searchContacted: action.payload, loading: false, error: null };
 
         case REGISTER_FAILURE:
         case LOGIN_FAILURE:
@@ -48,9 +53,12 @@ export const authReducer = (state = initialState, action) => {
         case UPDATE_USER_FAILURE:
             return { ...state, loading: false, error: action.payload };
 
+            case SELECT_CHAT: // Agrega este caso
+            return { ...state, selectedChat: action.payload };
+
+
         default:
             return state;
     }
 };
-
 
