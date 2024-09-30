@@ -1,6 +1,7 @@
 import React from 'react'
 import ProfileInfo from './componets/ProfileInfo';
 import NewDm from './componets/newDm/newDm';
+import ChatCard from '../chat-container/componets/contact-list/ChatCard';
 
 const ContactsContainer = () => {
   return (
@@ -19,6 +20,17 @@ const ContactsContainer = () => {
       <Tittle text="Canales" />
     </div>
   </div>
+  <div className="overflow-y-auto h-[70vh]">
+  <div className=''>
+    {[1, 1, 1,1,1,1, 1].map((item, index) => (
+      <div key={index} className="mb-10 bg-[#2a2b33] w-[100%] h-[10vh] rounded-3xl "> {/* Fondo y margen */}
+        <ChatCard />
+      </div>
+    ))}
+  </div>
+</div>
+
+ 
   <ProfileInfo/>
 </div>
   )

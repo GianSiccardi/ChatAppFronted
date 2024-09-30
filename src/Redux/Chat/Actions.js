@@ -14,28 +14,22 @@ import {
   import axios from "axios";
 
 
-export const chatCreate=(jwt,chatData)=>async (dispatch)=>{
-  
-  dispatch({type:CHAT_REQUEST})
-    try{
-
-      
-        const res=await axios.post(`${BASE_API_URL}/chats`,{
-            headers:{
-                "Content-Type":"application/json",
-                Authorization:`Bearer ${jwt}`
-                
+  export const chatCreate = (jwt, chatData) => async (dispatch) => {
+    dispatch({ type: CHAT_REQUEST });
+    try {
+        const res = await axios.post(`${BASE_API_URL}/chats`, chatData, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${jwt}`,
             },
-            body:JSON.stringify(chatData.data)
         });
 
-        const data=await res.json();
-        console.log("create chat" , data)
-        dispatch({type:CHAT_SUCCESS,payload:data})
-
-    }catch(e){
+        const data = res.data;
+        console.log("create chat", data);
+        dispatch({ type: CHAT_SUCCESS, payload: data });
+    } catch (e) {
         console.error("Chat:", e.response ? e.response.data : e.message);
-        dispatch({type: CHAT_FAILURE ,payload:e.message})
+        dispatch({ type: CHAT_FAILURE, payload: e.message });
     }
 }
 
@@ -66,7 +60,7 @@ export const chatGroup=(jwt,chatData)=>async (dispatch)=>{
   }
 
 
-export const getUserChat=(jwt,chatData)=>async (dispatch)=>{
+export const getAllUserChat=(jwt)=>async (dispatch)=>{
   
     dispatch({type:GET_ALL_CHATS_REQUEST})
       try{
@@ -78,7 +72,7 @@ export const getUserChat=(jwt,chatData)=>async (dispatch)=>{
                   Authorization:`Bearer ${jwt}`
                   
               },
-              body:JSON.stringify(chatData.data)
+              body:JSON.stringify(data)
           });
   
           const data=await res.json();
