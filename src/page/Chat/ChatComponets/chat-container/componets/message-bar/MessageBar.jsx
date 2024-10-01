@@ -12,6 +12,7 @@ const MessageBarContainer = () => {
   const emojiRef = useRef();
   const [message, setMessage] = useState("")
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
+  
   const dispatch=useDispatch();
   const {user,selectedChat}=useSelector(store=>store.auth)
   const jwt=localStorage.getItem("jwt")
@@ -56,6 +57,7 @@ const MessageBarContainer = () => {
           onKeyDown={(e)=>{
             if(e.key==='Enter'){
               handleSendMessage()
+              setMessage("")
             }
           }}/>
 

@@ -7,7 +7,7 @@ const ChatCard = () => {
             <img></img>
 
         </div>
-      <div className="pl-5 mt-6 mr-16 w-[70%]">
+      <div className="pl-5 mt-4 mr-16 w-[70%]">
         <div className="flex justify-between items-center">
        <p className='text-lg'>username</p>
        <p className='text-sm'>timestamp</p>

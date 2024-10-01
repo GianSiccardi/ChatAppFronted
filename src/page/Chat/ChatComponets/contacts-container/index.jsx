@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ProfileInfo from './componets/ProfileInfo';
 import NewDm from './componets/newDm/newDm';
 import ChatCard from '../chat-container/componets/contact-list/ChatCard';
 
 const ContactsContainer = () => {
+  const[currentChat,setCurrentChat]=useState(null);  
+const handleClikOnChatCard =()=>{
+setCurrentChat(true)
+}
+
+
   return (
 <div className='relative md:w-[35vw] lg:w-[30vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f30b] w-full'>
   <div className="pt-3 ml-16">
@@ -23,7 +29,9 @@ const ContactsContainer = () => {
   <div className="overflow-y-auto h-[70vh]">
   <div className=''>
     {[1, 1, 1,1,1,1, 1].map((item, index) => (
-      <div key={index} className="mb-10 bg-[#2a2b33] w-[100%] h-[10vh] rounded-3xl "> {/* Fondo y margen */}
+      <div
+      onClick={handleClikOnChatCard}
+      key={index} className="mb-10 bg-[#2a2b33] w-[100%] h-[9vh] rounded-3xl "> {/* Fondo y margen */}
         <ChatCard />
       </div>
     ))}
@@ -67,7 +75,7 @@ const Logo = () => {
           fill="#a16ee8"
         ></path>{" "}
       </svg>
-      <span className="text-3xl font-semibold ">Syncronus</span>
+      <span className="text-3xl font-semibold ">ChatApp</span>
     </div>
   );
 };
