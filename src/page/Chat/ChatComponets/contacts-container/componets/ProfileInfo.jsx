@@ -26,12 +26,12 @@ const ProfileInfo = () => {
 
 
     const logOut = () => {
-        dispatch(logOutAction); // Realiza la acción de logout
+        dispatch(logOutAction);
         console.log("salir");
-        navigate("/"); // Navega a la página de inicio
+        navigate("/"); 
     };
 
-    return ( // Asegúrate de que el return esté aquí
+    return ( 
         <div className='absolute bottom-0 h-20 flex items-center justify-between px-10 w-full bg-[#2a2b33]'>
             <div className="flex gap-3 items-center justify-center">
                 <div className='w-18 h-18 relative'>

@@ -1,15 +1,15 @@
 import React from 'react'
 
-const ChatCard = () => {
+const ChatCard = ({userImage,name}) => {
   return (
     <div className='flex items-center justify-center py-2 group cursor-pointer'>
         <div className="w-[20%]">
-            <img></img>
+            <img src={userImage}></img>
 
         </div>
       <div className="pl-5 mt-4 mr-16 w-[70%]">
         <div className="flex justify-between items-center">
-       <p className='text-lg'>username</p>
+       <p className='text-lg'>{name}</p>
        <p className='text-sm'>timestamp</p>
 
         </div>

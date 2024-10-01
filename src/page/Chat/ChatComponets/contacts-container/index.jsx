@@ -1,47 +1,81 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ProfileInfo from './componets/ProfileInfo';
 import NewDm from './componets/newDm/newDm';
-import ChatCard from '../chat-container/componets/contact-list/ChatCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { chatCreate, getAllUserChat } from '@/Redux/Chat/Actions';
+import ChatCard from './componets/contact-list/ChatCard';
 
 const ContactsContainer = () => {
-  const[currentChat,setCurrentChat]=useState(null);  
-const handleClikOnChatCard =()=>{
-setCurrentChat(true)
-}
+  const [currentChat, setCurrentChat] = useState(null);
+  const { auth, chat } = useSelector(store => store);
+  const jwt = localStorage.getItem("jwt")
+
+  const dispatch = useDispatch()
+
+  const handleClikOnChatCard = (item, userId, jwt) => {
+    //setCurrentChat(item)
+    //dispatch(chatCreate({jwt,data:{userId}}))
+
+  }
+  useEffect(() => {
+    if (jwt) {
+
+      dispatch(getAllUserChat(jwt))
+    } else {
+      console.error("JWT no encontrado o es inválido");
+    }
+  }, [dispatch, jwt, chat.createdGroup, chat.createdChat])
 
 
+  console.log("Estado inicial de chat.chats: ", chat.chats);
   return (
-<div className='relative md:w-[35vw] lg:w-[30vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f30b] w-full'>
-  <div className="pt-3 ml-16">
-    <Logo/>
-  </div>
-  <div className="my-5 ml-14">
-    <div className="flex justify-between p-1">
-      <Tittle text="Mensajes" />
-      <NewDm className="" /> 
-    </div>
-  </div>
-  <div className="my-5 ml-14">
-    <div className="flex pr-10">
-      <Tittle text="Canales" />
-    </div>
-  </div>
-  <div className="overflow-y-auto h-[70vh]">
-  <div className=''>
-    {[1, 1, 1,1,1,1, 1].map((item, index) => (
-      <div
-      onClick={handleClikOnChatCard}
-      key={index} className="mb-10 bg-[#2a2b33] w-[100%] h-[9vh] rounded-3xl "> {/* Fondo y margen */}
-        <ChatCard />
+    <div className='relative md:w-[35vw] lg:w-[30vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f30b] w-full'>
+      <div className="pt-3 ml-16">
+        <Logo />
       </div>
-    ))}
-  </div>
-</div>
+      <div className="my-5 ml-14">
+        <div className="flex justify-between p-1">
+          <Tittle text="Mensajes" />
+          <NewDm className="" />
+        </div>
+      </div>
+      <div className="my-5 ml-14">
+        <div className="flex pr-10">
+          <Tittle text="Canales" />
+        </div>
+      </div>
+      <div className="overflow-y-auto h-[70vh]">
+        <div className=''>
+          {chat.chats.length > 0 && chat.chats?.map((item, index) => {
+           
 
- 
-  <ProfileInfo/>
-</div>
-  )
+           if (!auth.user?.id) {
+            console.error("El usuario no está autenticado");
+            return null; // O manejar el estado como desees
+        }
+            const otherCustomer = item.customers.find(customer => customer.id !== auth.reqUser?.id);
+    
+            // Depuración
+            console.log("ID de usuario autenticado:", auth.reqUser?.id);
+            console.log("clientes:", item.customers);
+            console.log("OTRO USUARIO", otherCustomer);
+            return (
+              <div
+                onClick={() => handleClikOnChatCard(item.id)}
+                key={index} className="mb-10 bg-[#2a2b33] w-[100%] h-[9vh] rounded-3xl">
+
+                <ChatCard
+                  name={otherCustomer ? otherCustomer.fullName : 'Usuario no encontrado'}
+                  userImage={otherCustomer ? otherCustomer.profile_picture : ''}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <ProfileInfo />
+    </div>
+  );
 }
 
 export default ContactsContainer
@@ -80,8 +114,8 @@ const Logo = () => {
   );
 };
 
-const Tittle=({text})=>{
-  return(
+const Tittle = ({ text }) => {
+  return (
     <h6 className='uppercase tracking-tighter-widest text-neutral-400 pl-10 font-light text-opacity-90 text-sm'>{text}</h6>
   )
 }

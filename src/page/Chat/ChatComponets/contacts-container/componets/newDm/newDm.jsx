@@ -24,20 +24,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import { store } from '@/Redux/store';
 import { colors, getColor } from '@/utils/utils';
 import { searchUser, selectChat } from '@/Redux/Auth/Actions'
+import { chatCreate } from '@/Redux/Chat/Actions'
 
-const NewDm = () => {
+const NewDm = ({ item }) => {
 
 
-    const { auth, chatState } = useSelector(store => store);
+    const { auth, chat } = useSelector(store => store);
 
     const [openNewContactModel, setOpenNewContactModel] = useState(false);
     const searchConctacted = useSelector(state => state.auth.searchContacted);
     const [image, setImage] = useState(null);
     const [keyword, setKeyword] = useState('')
-
-
-
+    const jwt = localStorage.getItem("jwt")
     const dispatch = useDispatch()
+
+
+    const handleClikOnChatCard = (userId) => {
+       
+        if (!jwt) {
+            console.error("Token JWT no encontrado");
+            return; 
+        }
+        dispatch(chatCreate(jwt, { userId })); 
+    };
+
 
     const handleSearchUser = (keyword) => {
         setKeyword(keyword);
@@ -48,8 +58,8 @@ const NewDm = () => {
 
 
     const selecteNewConctat = (contact) => {
-        dispatch(selectChat(contact)); 
-    
+        dispatch(selectChat(contact));
+
         setOpenNewContactModel(false);
     }
 
@@ -82,13 +92,17 @@ const NewDm = () => {
                             placeholder="Busca el contacto"
                             className="rounded-lg p-6 bg-[#2c2e3b] border-none"
                             onChange={(e) => handleSearchUser(e.target.value)}
+
                         />
                     </div>
                     <ScrollArea className="h-[55vh] overflow-y-auto">
                         <div className="flex flex-col gap-5">
                             {Array.isArray(searchConctacted) && searchConctacted.map((contact) => (
                                 <div key={contact.id}
-                                    onClick={() => selecteNewConctat(contact)}
+                                    onClick={() => {
+                                        selecteNewConctat(contact);
+                                        handleClikOnChatCard(contact.id);
+                                    }}
                                     className='flex gap-3 items-center cursor-pointer'>
                                     <div className='w-18 h-18 relative'>
                                         <Avatar className='h-12 w-12 rounded-full overflow-hidden'>
@@ -108,7 +122,7 @@ const NewDm = () => {
                                     <div className="flex flex-col">
                                         <div className="flex flex-col">
                                             <span>{contact.fullName}</span>
-                                            <span className='text-xs'>{contact.email}</span> 
+                                            <span className='text-xs'>{contact.email}</span>
                                         </div>
 
 

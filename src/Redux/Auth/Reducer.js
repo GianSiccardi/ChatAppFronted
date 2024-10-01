@@ -23,6 +23,7 @@ const initialState = {
     loading: false,
     error: null,
     jwt: null,
+    reqUser:null,
     searchContacted: [],
     selectedChat: null, 
 }

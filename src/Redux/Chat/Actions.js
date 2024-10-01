@@ -60,27 +60,23 @@ export const chatGroup=(jwt,chatData)=>async (dispatch)=>{
   }
 
 
-export const getAllUserChat=(jwt)=>async (dispatch)=>{
-  
-    dispatch({type:GET_ALL_CHATS_REQUEST})
-      try{
-  
-        
-          const res=await axios.get(`${BASE_API_URL}/chats/customers`,{
-              headers:{
-                  "Content-Type":"application/json",
-                  Authorization:`Bearer ${jwt}`
-                  
-              },
-              body:JSON.stringify(data)
-          });
-  
-          const data=await res.json();
-          console.log("create chat" , data)
-          dispatch({type:GET_ALL_CHATS_SUCCESS,payload:data})
-  
-      }catch(e){
-          console.error("Chat:", e.response ? e.response.data : e.message);
-          dispatch({type: GET_ALL_CHATS_FAILURE,payload:e.message})
-      }
-  }
+  export const getAllUserChat = (jwt) => async (dispatch) => {
+    dispatch({ type: GET_ALL_CHATS_REQUEST });
+    try {
+        const res = await axios.get(`${BASE_API_URL}/chats/customer`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${jwt}`,
+            },
+        });
+
+        const data = res.data; 
+        console.log("CHATS", data);
+        dispatch({ type: GET_ALL_CHATS_SUCCESS, payload: data });
+    } catch (e) {
+        // Cambia esto para mostrar el error detallado
+        const errorMessage = e.response ? e.response.data : e.message;
+        console.error("Chat error:", errorMessage);
+        dispatch({ type: GET_ALL_CHATS_FAILURE, payload: errorMessage });
+        }
+};

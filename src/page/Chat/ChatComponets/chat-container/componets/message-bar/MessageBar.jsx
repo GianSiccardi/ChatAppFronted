@@ -14,6 +14,7 @@ const MessageBarContainer = () => {
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
   
   const dispatch=useDispatch();
+
   const {user,selectedChat}=useSelector(store=>store.auth)
   const jwt=localStorage.getItem("jwt")
 
@@ -43,7 +44,6 @@ const MessageBarContainer = () => {
         userId: selectedChat.id, 
      
       };
-      dispatch(chatCreate(jwt, chatData)); 
       setMessage(''); 
     }
   };
