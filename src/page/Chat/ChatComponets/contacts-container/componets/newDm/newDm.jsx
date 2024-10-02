@@ -29,7 +29,6 @@ import { chatCreate } from '@/Redux/Chat/Actions'
 const NewDm = ({ item }) => {
 
 
-    const { auth, chat } = useSelector(store => store);
 
     const [openNewContactModel, setOpenNewContactModel] = useState(false);
     const searchConctacted = useSelector(state => state.auth.searchContacted);

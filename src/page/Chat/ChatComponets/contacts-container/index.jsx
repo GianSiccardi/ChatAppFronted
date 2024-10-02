@@ -4,6 +4,7 @@ import NewDm from './componets/newDm/newDm';
 import { useDispatch, useSelector } from 'react-redux';
 import { chatCreate, getAllUserChat } from '@/Redux/Chat/Actions';
 import ChatCard from './componets/contact-list/ChatCard';
+import { selectChat } from '@/Redux/Auth/Actions';
 
 const ContactsContainer = () => {
   const [currentChat, setCurrentChat] = useState(null);
@@ -12,11 +13,19 @@ const ContactsContainer = () => {
 
   const dispatch = useDispatch()
 
-  const handleClikOnChatCard = (item, userId, jwt) => {
-    //setCurrentChat(item)
-    //dispatch(chatCreate({jwt,data:{userId}}))
 
-  }
+  const handleClikOnChatCard = (chatId) => {
+    const selectedChat = chat.chats.find(item => item.id === chatId);
+    if (selectedChat) {
+      const otherCustomer = selectedChat.customers.find(customer => customer.id !== auth.user?.id);
+      dispatch(selectChat({
+        fullName: otherCustomer.fullName,
+        email: otherCustomer.email,
+        image: otherCustomer.profile_picture,
+        color: otherCustomer.color
+      }));
+    }
+  };
   useEffect(() => {
     if (jwt) {
 
@@ -27,7 +36,6 @@ const ContactsContainer = () => {
   }, [dispatch, jwt, chat.createdGroup, chat.createdChat])
 
 
-  console.log("Estado inicial de chat.chats: ", chat.chats);
   return (
     <div className='relative md:w-[35vw] lg:w-[30vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f30b] w-full'>
       <div className="pt-3 ml-16">
@@ -46,31 +54,31 @@ const ContactsContainer = () => {
       </div>
       <div className="overflow-y-auto h-[70vh]">
         <div className=''>
-          {chat.chats.length > 0 && chat.chats?.map((item, index) => {
-           
+          {Array.isArray(chat.chats) && chat.chats.length > 0 ? (
+            chat.chats.map((item, index) => {
+              if (!auth.user?.id) {
+                console.error("El usuario no está autenticado");
+                return null;
+              }
+              const otherCustomer = item.customers.find(customer => customer.id !== auth.reqUser?.id);
 
-           if (!auth.user?.id) {
-            console.error("El usuario no está autenticado");
-            return null; // O manejar el estado como desees
-        }
-            const otherCustomer = item.customers.find(customer => customer.id !== auth.reqUser?.id);
-    
-            // Depuración
-            console.log("ID de usuario autenticado:", auth.reqUser?.id);
-            console.log("clientes:", item.customers);
-            console.log("OTRO USUARIO", otherCustomer);
-            return (
-              <div
-                onClick={() => handleClikOnChatCard(item.id)}
-                key={index} className="mb-10 bg-[#2a2b33] w-[100%] h-[9vh] rounded-3xl">
-
-                <ChatCard
-                  name={otherCustomer ? otherCustomer.fullName : 'Usuario no encontrado'}
-                  userImage={otherCustomer ? otherCustomer.profile_picture : ''}
-                />
-              </div>
-            );
-          })}
+              return (
+                <div
+                  onClick={() => handleClikOnChatCard(item.id)}
+                  key={index} className="mb-10 bg-[#2a2b33] w-[100%] h-[9vh] rounded-3xl">
+                  <ChatCard
+                    name={otherCustomer ? otherCustomer.fullName : 'Usuario no encontrado'}
+                    userImage={otherCustomer ? otherCustomer.profile_picture : ''}
+                  />
+                </div>
+              );
+            })
+          ) : (
+            <div>
+              {console.log("chat.chats no es un array o está vacío:", chat.chats)}
+              <p>No hay chats disponibles.</p>
+            </div>
+          )}
         </div>
       </div>
       <ProfileInfo />

@@ -1,4 +1,5 @@
 import { chatCreate } from '@/Redux/Chat/Actions';
+import { createMessage } from '@/Redux/Message/Actions';
 import EmojiPicker from 'emoji-picker-react';
 import React, { useEffect, useRef, useState } from 'react'
 import { set } from 'react-hook-form';
@@ -12,12 +13,31 @@ const MessageBarContainer = () => {
   const emojiRef = useRef();
   const [message, setMessage] = useState("")
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
+  const[currentChat,setCurrentChat]=useState("")
+
   
   const dispatch=useDispatch();
 
   const {user,selectedChat}=useSelector(store=>store.auth)
+ 
   const jwt=localStorage.getItem("jwt")
 
+  const handleSendMessage = () => {
+
+    console.log("Contenido del mensaje:", message);
+
+    const chatId = selectedChat ? selectedChat.id : null;
+
+
+    console.log("Chat ID actual:", chatId);
+    if (message && chatId) {
+      dispatch(createMessage(jwt, { chatId, content: message }));
+      
+      setMessage('');
+  } else {
+      console.error("Message or selectedChat is missing");
+  }
+};
   useEffect(() => {
     function handleClickOutside(event) {
       if (emojiRef.current && !emojiRef.current.contains(event.target)) {
@@ -38,15 +58,7 @@ const MessageBarContainer = () => {
     setMessage((msg) => msg + emoji.emoji)
   }
 
-  const handleSendMessage = () => {
-    if (message && selectedChat) {
-      const chatData = {
-        userId: selectedChat.id, 
-     
-      };
-      setMessage(''); 
-    }
-  };
+
   return (
     <div className='h-[10vh] bg-[#1c1d25] flex justify-center items-center px-8 mb-6 gap-6'>
       <div className="flex-1 flex bg-[#2a2b33] h-16 rounded-md items-center gap-5 pr-5">

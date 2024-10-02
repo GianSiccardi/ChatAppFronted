@@ -46,6 +46,12 @@ export const authReducer = (state = initialState, action) => {
 
         case SEARCH_USER_SUCCESS:
             return { ...state, searchContacted: action.payload, loading: false, error: null };
+           
+         case SELECT_CHAT:
+                return {
+                    ...state,
+                    selectedChat: action.payload,
+                };
 
         case REGISTER_FAILURE:
         case LOGIN_FAILURE:
