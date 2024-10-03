@@ -71,8 +71,8 @@ export const chatGroup=(jwt,chatData)=>async (dispatch)=>{
         });
 
         const data = res.data; 
-        console.log("CHATS", data);
-        dispatch({ type: GET_ALL_CHATS_SUCCESS, payload: data });
+        console.log('Datos recibidos del servidor :', data);
+                dispatch({ type: GET_ALL_CHATS_SUCCESS, payload: data });
     } catch (e) {
         // Cambia esto para mostrar el error detallado
         const errorMessage = e.response ? e.response.data : e.message;

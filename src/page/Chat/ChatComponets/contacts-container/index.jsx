@@ -10,15 +10,16 @@ const ContactsContainer = () => {
   const [currentChat, setCurrentChat] = useState(null);
   const { auth, chat } = useSelector(store => store);
   const jwt = localStorage.getItem("jwt")
-
   const dispatch = useDispatch()
 
+  
 
   const handleClikOnChatCard = (chatId) => {
     const selectedChat = chat.chats.find(item => item.id === chatId);
     if (selectedChat) {
       const otherCustomer = selectedChat.customers.find(customer => customer.id !== auth.user?.id);
       dispatch(selectChat({
+        id: selectedChat.id,
         fullName: otherCustomer.fullName,
         email: otherCustomer.email,
         image: otherCustomer.profile_picture,
@@ -35,6 +36,7 @@ const ContactsContainer = () => {
     }
   }, [dispatch, jwt, chat.createdGroup, chat.createdChat])
 
+ 
 
   return (
     <div className='relative md:w-[35vw] lg:w-[30vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f30b] w-full'>
@@ -53,19 +55,22 @@ const ContactsContainer = () => {
         </div>
       </div>
       <div className="overflow-y-auto h-[70vh]">
-        <div className=''>
-          {Array.isArray(chat.chats) && chat.chats.length > 0 ? (
-            chat.chats.map((item, index) => {
+        <div>
+          {chat?.chats && Array.isArray(chat.chats) && chat.chats.length > 0 ? (
+            chat.chats.map((item) => {
               if (!auth.user?.id) {
                 console.error("El usuario no está autenticado");
                 return null;
               }
-              const otherCustomer = item.customers.find(customer => customer.id !== auth.reqUser?.id);
+
+              const otherCustomer = item.customers.find(customer => customer.id !== (auth.reqUser?.id || -1));
 
               return (
                 <div
                   onClick={() => handleClikOnChatCard(item.id)}
-                  key={index} className="mb-10 bg-[#2a2b33] w-[100%] h-[9vh] rounded-3xl">
+                  key={item.id} // Cambia aquí
+                  className="mb-10 bg-[#2a2b33] w-[100%] h-[9vh] rounded-3xl"
+                >
                   <ChatCard
                     name={otherCustomer ? otherCustomer.fullName : 'Usuario no encontrado'}
                     userImage={otherCustomer ? otherCustomer.profile_picture : ''}
@@ -75,7 +80,6 @@ const ContactsContainer = () => {
             })
           ) : (
             <div>
-              {console.log("chat.chats no es un array o está vacío:", chat.chats)}
               <p>No hay chats disponibles.</p>
             </div>
           )}

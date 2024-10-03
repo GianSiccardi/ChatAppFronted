@@ -13,14 +13,14 @@ const MessageBarContainer = () => {
   const emojiRef = useRef();
   const [message, setMessage] = useState("")
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
-  const[currentChat,setCurrentChat]=useState("")
+  const [currentChat, setCurrentChat] = useState("")
 
-  
-  const dispatch=useDispatch();
 
-  const {user,selectedChat}=useSelector(store=>store.auth)
- 
-  const jwt=localStorage.getItem("jwt")
+  const dispatch = useDispatch();
+
+  const { selectedChat } = useSelector(store => store.auth)
+
+  const jwt = localStorage.getItem("jwt")
 
   const handleSendMessage = () => {
 
@@ -32,12 +32,13 @@ const MessageBarContainer = () => {
     console.log("Chat ID actual:", chatId);
     if (message && chatId) {
       dispatch(createMessage(jwt, { chatId, content: message }));
-      
+
       setMessage('');
-  } else {
+    } else {
       console.error("Message or selectedChat is missing");
-  }
-};
+      console.log("Estado de selectedChat si falla:", selectedChat);  
+    }
+  };
   useEffect(() => {
     function handleClickOutside(event) {
       if (emojiRef.current && !emojiRef.current.contains(event.target)) {
@@ -45,7 +46,7 @@ const MessageBarContainer = () => {
       }
     }
 
-   
+
     document.addEventListener("mousedown", handleClickOutside);
 
 
@@ -65,13 +66,13 @@ const MessageBarContainer = () => {
         <input type="text" className='flex-1 px-5 bg-transparent rounded-md focus:border-none focus:outline-none'
           placeholder='EnviarMensaje'
           value={message}
-          onChange={(e) => setMessage(e.target.value)} 
-          onKeyDown={(e)=>{
-            if(e.key==='Enter'){
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
               handleSendMessage()
               setMessage("")
             }
-          }}/>
+          }} />
 
       </div>
 

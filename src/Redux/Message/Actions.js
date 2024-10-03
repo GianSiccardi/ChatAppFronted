@@ -40,9 +40,12 @@ export const getAllMessage = (jwt, messageData) => async (dispatch) => {
 
     dispatch({ type: GET_ALL_MESSAGES_REQUEST })
     try {
+        console.log("JWT en el actions:", jwt);
 
-
-        const res = await axios.get(`${BASE_API_URL}/messages/chat/${messageData.chatId}`, {
+        
+        const res = await axios.get(`${BASE_API_URL}/messages/chat/${messageData.chatId}`, 
+            
+            {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${jwt}`
@@ -50,12 +53,12 @@ export const getAllMessage = (jwt, messageData) => async (dispatch) => {
             },
         });
 
-        const data = await res.json();
-        console.log("create chatGROUP", data)
+        const data = res.data;
+        console.log("GET ALL Messagwe", data)
         dispatch({ type: GET_ALL_MESSAGES_SUCCESS, payload: data })
 
     } catch (e) {
-        console.error("Chat:", e.response ? e.response.data : e.message);
+        console.error("Message:", e.response ? e.response.data : e.message);
         dispatch({ type: GET_ALL_MESSAGES_FAILURE, payload: e.message })
     }
 }
