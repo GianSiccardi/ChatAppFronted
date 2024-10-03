@@ -40,9 +40,9 @@ const initialState = {
    
       return {
         ...state,
-        loading: true,
+        loading: false,
         error: null,
-        newMessages:action.payload
+        messages:action.payload
       };
   
       case CREATE_NEW_MESSAGES_FAILURE:

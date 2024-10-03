@@ -23,18 +23,21 @@ const initialState = {
     loading: false,
     error: null,
     jwt: null,
-    reqUser:null,
+    reqUser: null,
     searchContacted: [],
-    selectedChat: null, 
+    selectedChat: null,
 }
 export const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case REGISTER_REQUEST:
         case LOGIN_REQUEST:
-        case REQ_USER_REQUEST:
+
         case SEARCH_USER_REQUEST:
         case UPDATE_USER_REQUEST:
             return { ...state, loading: true, error: null };
+        case REQ_USER_SUCCESS:
+            console.log('Usuario recibido:', action.payload); 
+            return { ...state, user: action.payload, reqUser: action.payload, loading: false, error: null };
 
         case REGISTER_SUCCESS:
         case LOGIN_SUCCESS:
@@ -46,12 +49,12 @@ export const authReducer = (state = initialState, action) => {
 
         case SEARCH_USER_SUCCESS:
             return { ...state, searchContacted: action.payload, loading: false, error: null };
-           
-         case SELECT_CHAT:
-                return {
-                    ...state,
-                    selectedChat: action.payload,
-                };
+
+        case SELECT_CHAT:
+            return {
+                ...state,
+                selectedChat: action.payload,
+            };
 
         case REGISTER_FAILURE:
         case LOGIN_FAILURE:
@@ -60,7 +63,7 @@ export const authReducer = (state = initialState, action) => {
         case UPDATE_USER_FAILURE:
             return { ...state, loading: false, error: action.payload };
 
-            case SELECT_CHAT: // Agrega este caso
+        case SELECT_CHAT: // Agrega este caso
             return { ...state, selectedChat: action.payload };
 
 
