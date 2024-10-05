@@ -40,7 +40,6 @@ export const getAllMessage = (jwt, messageData) => async (dispatch) => {
 
     dispatch({ type: GET_ALL_MESSAGES_REQUEST })
     try {
-        console.log("JWT en el actions:", jwt);
 
         
         const res = await axios.get(`${BASE_API_URL}/messages/chat/${messageData.chatId}`, 
@@ -54,7 +53,6 @@ export const getAllMessage = (jwt, messageData) => async (dispatch) => {
         });
 
         const data = res.data;
-        console.log("GET ALL Messagwe", data)
         dispatch({ type: GET_ALL_MESSAGES_SUCCESS, payload: data })
 
     } catch (e) {

@@ -5,7 +5,8 @@ import {
     CREATE_NEW_MESSAGES_FAILURE,
     GET_ALL_MESSAGES_REQUEST,
     GET_ALL_MESSAGES_SUCCESS,
-    GET_ALL_MESSAGES_FAILURE
+    GET_ALL_MESSAGES_FAILURE,
+    ADD_MESSAGE
   } from './ActionsTypes.js';
   
 
@@ -29,13 +30,13 @@ const initialState = {
             error: null,
           };
   
-      case CREATE_NEW_MESSAGES_SUCCESS:
-        return {
-            ...state,
-            loading: true,
-            error: null,
-            messages:action.payload
-          };
+          case CREATE_NEW_MESSAGES_SUCCESS:
+            return {
+              ...state,
+              loading: false,
+              error: null,
+              messages: [...state.messages, action.payload]  // Agregar nuevo mensaje
+            };
       case GET_ALL_MESSAGES_SUCCESS:
    
       return {
@@ -43,6 +44,12 @@ const initialState = {
         loading: false,
         error: null,
         messages:action.payload
+      };
+
+      case ADD_MESSAGE:
+      return {
+        ...state,
+        messages: [...state.messages, action.payload]
       };
   
       case CREATE_NEW_MESSAGES_FAILURE:
