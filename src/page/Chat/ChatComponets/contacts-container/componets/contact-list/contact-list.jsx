@@ -2,6 +2,7 @@ import { getAllUserChat } from '@/Redux/Chat/Actions';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+
 const contactList = () => {
 
 const dispatch=useDispatch();
@@ -31,7 +32,7 @@ useEffect(()=>{
       ))}
     </ul>
   ) : (
-    <p>No chats available</p>
+<p>no hay chat</p>
   )}
 </div>
 

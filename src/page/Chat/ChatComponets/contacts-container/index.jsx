@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { chatCreate, getAllUserChat } from '@/Redux/Chat/Actions';
 import ChatCard from './componets/contact-list/ChatCard';
 import { selectChat } from '@/Redux/Auth/Actions';
+import Lottie from 'react-lottie';
+import { ainimationDefaultOptions } from '@/utils/utils';
+
 
 const ContactsContainer = () => {
   const [currentChat, setCurrentChat] = useState(null);
@@ -79,9 +82,21 @@ const ContactsContainer = () => {
               );
             })
           ) : (
-            <div>
-              <p>No hay chats disponibles.</p>
+            <div className='flex-1 md:bg-[#1b1c24] h-[73vh] md:flex flex-col justify-center items-center duration-1000 transition-all'>
+            <Lottie
+                isClickToPauseDisabled={true}
+                height={100}
+                width={100}
+                options={ainimationDefaultOptions} />
+            <div className="text-opacity-80 text-white flex flex-col gap-5 items-center mt-10 lg:text-2xl transition-all duration-300 text-center">
+                <h3 className='poppins-medium'>
+                Agrega<span className='text-purple-500'>  amigos  </span> para
+        
+                    <span className='text-purple-500'> chatear!!</span>
+                </h3>
+        
             </div>
+        </div>
           )}
         </div>
       </div>

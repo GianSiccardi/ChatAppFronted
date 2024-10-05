@@ -32,7 +32,7 @@ const ChatHeader = () => {
 
         </div>
 
-        <div className='flex flex-row  justify-between gap-52 items-center mr-16 pr-16'>
+        <div className='flex flex-row  justify-between gap-52 ml-40 items-center mr-10 pr-16'>
           {selectChat && selectChat.fullName && (
              <span className="text-white text-xl font-semibold">
              {selectChat.fullName.charAt(0).toUpperCase() + selectChat.fullName.slice(1)}
